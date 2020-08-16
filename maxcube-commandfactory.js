@@ -21,7 +21,7 @@ function generateSetTemperatureCommand (rfAdress, room_id, mode, temperature, un
       modeBin = '10';
       var momentDate = moment(untilDate);
       var year_until = padLeft((momentDate.get('year') - 2000).toString(2), 7);
-      var month_until = padLeft((momentDate.get('month')).toString(2), 4);
+      var month_until = padLeft((momentDate.get('month')+1).toString(2), 4);
       var day_until = padLeft(momentDate.get('date').toString(2), 5);
       date_until = padLeft(parseInt((month_until.substr(0,3) + day_until + month_until.substr(-1) + year_until), 2).toString(16), 4);
       time_until = padLeft(Math.round((momentDate.get('hour') + (momentDate.get('minute') / 60)) * 2).toString(16), 2);
