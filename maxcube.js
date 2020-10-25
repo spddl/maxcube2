@@ -270,8 +270,12 @@ MaxCube.prototype.setTemperature = function(rf_address, degrees, mode, untilDate
   checkInitialised.call(this);
 
   var self = this;
+  var room_id = this.deviceCache[rf_address].room_id;
+  if (rf_address === '000000') {
+    room_id = '00'; // '00' sets all temperature for all devices
+  }
   degrees = Math.max(2, degrees);
-  var command = MaxCubeCommandFactory.generateSetTemperatureCommand (rf_address, this.deviceCache[rf_address].room_id, mode || 'MANUAL', degrees, untilDate);
+  var command = MaxCubeCommandFactory.generateSetTemperatureCommand (rf_address, room_id, mode || 'MANUAL', degrees, untilDate);
   return send.call(this, command, 'S', timeout).then(function (res) {
     self.commStatus.duty_cycle = res.duty_cycle;
     self.commStatus.free_memory_slots = res.free_memory_slots;
