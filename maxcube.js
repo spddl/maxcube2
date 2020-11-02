@@ -74,6 +74,7 @@ function MaxCube(ip, port) {
           self.metaInfo.serial_number       = parsedCommand.serial_number;
           self.metaInfo.firmware_version    = parsedCommand.firmware_version;
           self.emit('hello', parsedCommand);
+          self.emit('commStatus', { duty_cycle: parsedCommand.duty_cycle, free_memory_slots: parsedCommand.free_memory_slots });
           break;
         }
         case 'M': {
@@ -92,6 +93,10 @@ function MaxCube(ip, port) {
           self.updateDeviceConfig(parsedCommand);
           self.emit('configuration', parsedCommand);
           break;
+        }
+        case 'S': {
+          self.emit('commStatus', { duty_cycle: parsedCommand.duty_cycle, free_memory_slots: parsedCommand.free_memory_slots });
+          break
         }
       }
     } catch (e) {
@@ -270,9 +275,9 @@ MaxCube.prototype.setTemperature = function(rf_address, degrees, mode, untilDate
   checkInitialised.call(this);
 
   var self = this;
-  var room_id = this.deviceCache[rf_address].room_id;
-  if (rf_address === '000000') {
-    room_id = '00'; // '00' sets all temperature for all devices
+  var room_id = '00' // '00' sets all temperature for all devices
+  if (this.deviceCache[rf_address]) {
+    room_id = this.deviceCache[rf_address].room_id
   }
   degrees = Math.max(2, degrees);
   var command = MaxCubeCommandFactory.generateSetTemperatureCommand (rf_address, room_id, mode || 'MANUAL', degrees, untilDate);

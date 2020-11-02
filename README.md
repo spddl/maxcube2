@@ -38,6 +38,7 @@ myMaxCube.on('closed', function () {
 * closed
 * error
 * hello (arg = hello object)
+* commStatus (arg = { duty_cycle, free_memory_slots })
 * meta_data (arg = meta data object)
 * device_list (arg = list of devices)
 * configuration (arg = configuration object for a single device)
